@@ -1,0 +1,2676 @@
+{
+    "requisicoes": [
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND application:top-saude AND (service:topsaude_v12/ws/integracaoagendamentoonline OR service:topsaude_v12/ws/wsintegracaoinpartopme OR service:topsaude_v12/ws/wsptuchat) AND NOT (resource_name:post_/comunicacaochatv1.svc)}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query4",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet_core.request.hits{env:producao,application:top-saude,service:topdown.ptu.sispac.api,!resource_name:get_/apis/ptusispac.api/api/pacotes}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query5",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao AND application:top-saude AND service:topdown.ptu.sispac.api-http-client OR service:topsaude_v12/ws/integracaoagendamentoonline-http-client OR service:topsaude_v12/ws/wsptuchat-http-client OR service:topsaude_v12/ws/wsintegracaoinpartopme-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1 + query4 + query5)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND application:top-saude AND service:apicontasmedicas OR service:contasmedicas OR service:topsaudev12/apis/topdownanscalculocopart OR service:topsaude_v12/portaltiss OR service:topsaude_v12/rsus OR service:topsaudev12/ws/wsimagemreembolso OR service:topsaudev12/ws/wsintegracaopreviareembolso OR service:topsaudev12/ws/wsintegracaoreembolso OR service:topsaudev12/ws/wsvalorreembolso}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao,application:top-saude,service:topsaude_v12/portaltiss-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1 + query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet_core.request.hits{env:producao AND application:top-saude AND service:gerenciadormovimentacoesbeneficiarioapi OR service:topdown.autorizacao.medica.repository.service.api OR service:topdown.core.service.endereco.service.api OR service:topdown.movimentacao.cadastral.repository.service.api}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND application:top-saude AND service:topsaude_v12/tsnmvc OR service:topsaude_v12/ws/topdown.protocolo.ws.siebel OR service:topsaude_v12/ws/tiss/v* OR service:apialcadapagamento OR service:pwaalcadapagamento OR service:topsaude_v12/enviosms}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query3",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao AND application:top-saude AND service:gerenciadormovimentacoesbeneficiarioapi-http-client OR service:topsaude_v12/ws/topdown.protocolo.ws.siebel-http-client OR service:topsaude_v12/tsnmvc-http-client OR service:topsaude_v12/ws/tiss/v* OR service:topsaude_v12/enviosms-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1 + query2 + query3)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet_core.request.hits{env:producao,application:top-saude,service:topdown.pagamento.service.api}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND application:top-saude AND service:topsaude_v12/portal_servicos OR service:topsaudev12/ws/beneficiarioinfofinanceiroservice OR service:topsaude_v12/ws/ws.seguros.portalseguros.services OR service:topsaude_v12/ws/ws.seguros.service OR service:topsaude_v12/ws/ws.segurosunimed.service OR service:topsaudev12/ws/wsappunificadoseguros OR service:topsaude_v12/ws/wsgeocode}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query3",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao AND application:top-saude AND service:topdown.pagamento.service.api-http-client OR service:topsaude_v12/ws/ws.seguros.portalseguros.services-http-client OR service:topsaude_v12/ws/wsgeocode-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1 + query2 + query3)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:producao,application:top-saude,service:topsaude-gen-relatorio-ws}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao,application:top-saude,service:topsaude_v12/ws/tiss/*}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao ,service:eprevprd}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao,service:eprevprd_services}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao,service:eprevprd_portal}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet_core.request.hits{env:producao,service:unimed.eprev.api}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao,service:eprevprd-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao,service:eprevprd_portal-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao,service:eprevprd_services-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao,service:unimed.eprev.api-http-client}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:produto-previdencia-pf-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:financeiro-previdencia-pf-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-previdencia-cotacao}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-saude-cotacao-prd}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-odonto-cotacao}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-deo-legado}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-empresarial-cotacao}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-empresarial-legado}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-residencial-cotacao}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-residencial-legado}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-rcp-cotacao}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-rcp-legado}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:brms-gateway-rcpso-legado}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-saude}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-odonto}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-siebel}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-joker}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-vida}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-prev}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-re}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-base21}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": "",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{service:uniservices-gem}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND service:calculemais AND (resource_name:post_/api/cotacao* OR resource_name:get_/api/produto/* OR resource_name:get_/api/endereco/* OR resource_name:post_/api/corretor/* OR resource_name:get_/cotacao/*)}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao AND service:calculemais-http-client AND (resource_name:post_brms-gateway-vida-b2c-cotacao-hml.lb.digital-segurosunimed.com/* OR resource_name:get_uniservices.digital-segurosunimed.com/uniservices-base21/api/* OR resource_name:get_api-analisesespeciais.segurosunimed.com.br/*)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1 + query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND service:calculemais AND (resource_name:post_/api/segurado/* OR resource_name:get_/cliente/* OR resource_name:post_/api/cotacaosegurado/*)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND service:calculemais AND (resource_name:post_/api/authentication/* OR resource_name:get_/api/sso/* OR resource_name:get_/singlesignon/* OR resource_name:get_/logout* OR resource_name:get_/login* OR resource_name:get_/api/authentication/*)}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao AND service:calculemais-http-client AND (resource_name:get_homologacao-rh-sso-external.segurosunimed.com.br/auth/realms/unimed-externos/*)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1 + query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND service:calculemais AND (resource_name:get_/api/footer* OR resource_name:get_/content/* OR resource_name:get_/scripts/* OR resource_name:get_/api/usuario/*)}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.http.request.hits{env:producao AND service:calculemais-http-client AND (resource_name:get_cms.segurosunimed.com.br/wp-json/*)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1 + query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND service:calculemais* AND (resource_name:get_/api/papelaria* OR resource_name:post_/api/cotacao/obtemproposta/* OR resource_name:post_/api/corretor/verificaassinaturacorretor*)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND service:calculemais* AND (resource_name:put_/integration/proposta/*)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd,resource_name:get_/tokenurl}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd,resource_name:get_/tokenurlsinistroonline/vida}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd,resource_name:post_/axis/services/importupdatestipulatorintegrationseiport}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd,resource_name:post_/axis/services/importupdateagentintegrationseiport}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd,resource_name:get_/gerarpdfdirf}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd,resource_name:post_/axis/services/generatetokenseiport}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:sso-prd,resource_name:get_/tokenurlsinistroonline/patrimonial}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0,
+                            "custom_bg_color": "#00fa11",
+                            "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Logo_Seguros_Unimed.png/640px-Logo_Seguros_Unimed.png"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:produtoodontowsv1-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "palette": "white_on_green",
+                            "value": 0
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:produto-previdencia-pf-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:produto-vida-pf-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:produto-re-pf-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:produtosaudewsv1}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:protocolo-ans-pf-service}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd AND service:re-apolices-prd AND (resource_name:get_/consultar-franquia-empresarial/cep/_cep_/ocupacao/_ocupacao_/subocupacao/_subocupacao OR resource_name:get_/ocupacao OR resource_name:get_/sub-ocupacao OR resource_name:get_/corretor OR resource_name:get_/proposta/empresarial/consultar OR resource_name:post_/proposta/empresarial/salvar OR resource_name:post_/proposta/empresarial/salvarpdf OR resource_name:post_/apolice/empresarial/v2 OR resource_name:get_/cotacao/empresarial/consultar OR resource_name:post_/cotacao/empresarial/validar-aceitacao OR resource_name:post_/cotacao/empresarial/salvar OR resource_name:post_/cotacao/empresarial/salvarpdf OR resource_name:post_/cotacao/empresarial/_numerocotacao_/status OR resource_name:post_/proposta/empresarial/_numeroproposta_/status)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd AND service:re-apolices-prd AND (resource_name:get_/dados-por-corretor OR resource_name:get_/profissao OR resource_name:get_/escritorio-regional OR resource_name:get_/cnae OR resource_name:post_/renovacao/gerarpropostas OR resource_name:get_/swagger-ui.html OR resource_name:get_/ OR resource_name:get_/v2/api-docs OR resource_name:get_/swagger-resources/configuration/security OR resource_name:get_/swagger-resources/configuration/ui OR resource_name:get_/swagger-resources)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd AND service:re-apolices-prd AND (resource_name:get_/especialidade OR resource_name:get_/renovacao/rcp/consultar OR resource_name:get_/proposta/rcp/consultar OR resource_name:post_/proposta/rcp/salvar OR resource_name:post_/proposta/rcp/salvarpdf OR resource_name:post_/apolice/rcp/v2 OR resource_name:post_/proposta/rcp/_numeroproposta_/status OR resource_name:post_/cotacao/rcp/salvar OR resource_name:get_/cotacao/rcp/consultar OR resource_name:post_/cotacao/rcp/salvarpdf OR resource_name:post_/cotacao/rcp/_numerocotacao_/status)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd AND service:re-apolices-prd AND (resource_name:get_/consultar-franquia/cep/_cep_/tipo-residencia/_tiporesidencia OR resource_name:get_/consultar-combos OR resource_name:get_/renovacao/residencial/consultar OR resource_name:get_/proposta/residencial/consultar OR resource_name:post_/proposta/residencial/salvar OR resource_name:post_/apolice/residencial/v2 OR resource_name:post_/proposta/residencial/salvarpdf OR resource_name:post_/proposta/residencial/_numeroproposta_/status OR resource_name:post_/cotacao/residencial/salvar OR resource_name:post_/cotacao/residencial/salvarpdf OR resource_name:get_/cotacao/residencial/consultar OR resource_name:post_/cotacao/residencial/_numerocotacao_/status)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd,service:produto-re-pf-java,resource_name:post_/produto/apolice}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query1",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet_core.request.hits{env:producao AND service:topdown.cripto.webapi OR service:gerenciadormovimentacoesbeneficiarioapi OR service:topdown.movimentacao.cadastral.repository.service.api}.as_count()",
+                            "aggregator": "sum"
+                        },
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao,service:topsaude/odo_portal}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query1) + default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND service:topsaude/ws/portalunimedodonto OR service:topsaude/ws/wsapoliceinfofinanceiroservice OR service:topsaude/ws/wsprotocoloreembolsoOT OR service:topsaude/ws/propostaservice OR service:topsaude/ws/wscobrancaservice OR service:topsaude/ws/wsunimedodontoservice}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND (service:topsaude/ws/servicosunimedseguros OR service:topsaude/ws/wsgeocode OR service:topsaude/ws/wsbeneficiarioportal OR service:topsaude/ws/servicesmsinfobip OR service:topsaude/ws/servicosunimedsegurosodo)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.aspnet.request.hits{env:producao AND (service:topsaude/ws/wsintegracaodocusign OR service:topsaude/tsnmvc)}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:producao,service:movimentacao-cadastral-odonto-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        },
+        {
+            "viz": "query_value",
+            "requests": [
+                {
+                    "response_format": "scalar",
+                    "queries": [
+                        {
+                            "name": "query2",
+                            "data_source": "metrics",
+                            "query": "sum:trace.servlet.request.hits{env:prd ,service:tokencorporativo-java}.as_count()",
+                            "aggregator": "sum"
+                        }
+                    ],
+                    "formulas": [
+                        {
+                            "formula": "default_zero(query2)",
+                            "number_format": {
+                                "unit": {
+                                    "label": " ",
+                                    "type": "custom_unit_label"
+                                }
+                            }
+                        }
+                    ],
+                    "conditional_formats": [
+                        {
+                            "comparator": ">=",
+                            "value": 0,
+                            "palette": "white_on_green"
+                        }
+                    ]
+                }
+            ],
+            "autoscale": false,
+            "precision": 0,
+            "timeseries_background": {
+                "yaxis": {
+                    "include_zero": false
+                },
+                "type": "area"
+            }
+        }
+    ]
+}
