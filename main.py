@@ -19,11 +19,11 @@ headers = {
     'DD-API-KEY': api_key,
     'DD-APPLICATION-KEY': application_key
 }
-with open('querys\dashboard_queries_requisicoes.json', 'r') as file:
+with open('querys/dashboard_queries_requisicoes.json', 'r') as file:
     dashboard_queries_req_data = json.load(file)
-with open('querys\dashboard_queries_degradacao.json', 'r') as file:
+with open('querys/dashboard_queries_degradacao.json', 'r') as file:
     dashboard_queries_deg_data = json.load(file)
-with open('querys\dashboard_queries_indisponibilidade.json', 'r') as file:
+with open('querys/dashboard_queries_indisponibilidade.json', 'r') as file:
     dashboard_queries_ind_data = json.load(file)
 
 dashboard_queries_requisicoes = dashboard_queries_req_data['requisicoes']
