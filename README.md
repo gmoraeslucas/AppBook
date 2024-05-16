@@ -13,8 +13,15 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
-- Você instalou corretamente os `<requirements.txt>`.
-- Você tem uma `<API KEY>` e uma `<APPLICATION KEY>` da DataDog e adicionou no código para ter acesso aos dados.
+- Você instalou corretamente os `<requirements.txt>`;
+- 
+- Você tem uma `<API_KEY>` e uma `<APPLICATION_KEY>` da DataDog e criou um arquivo `<.env>`, e adicionou no diretório AppBook com as seguintes informações:
+  
+*.env*
+```
+API_KEY=xxx
+APPLICATION_KEY=xxx
+```
 - Você possui a versão mais recente do `<Python>` instalada.
 
 ## ☕ Usando AppBook
