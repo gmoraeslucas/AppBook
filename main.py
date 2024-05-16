@@ -3,10 +3,16 @@ import json
 import os
 import holidays
 import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+import threading
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
 from calendar import monthrange
 from datetime import datetime, timezone, timedelta, date
 from dotenv import load_dotenv
+import time
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 load_dotenv()
 api_key = os.getenv('API_KEY')
@@ -100,6 +106,8 @@ sistemas = {
     ]
 }
 
+cancel_processing = False
+
 def process_service_data(year, month, days_to_process):
     services_data = {}
 
@@ -126,12 +134,16 @@ def process_service_data(year, month, days_to_process):
             'erros_totais': 0,
             'SLA (5xx)': 0
         }
+    total_days = days_to_process
+    processed_days = 0
     for day in range(1, days_to_process + 1):
         if is_weekend(year, month, day) or is_holiday(year, month, day):
             continue
         
         from_time = to_timestamp(year, month, day, 7)
         to_time = to_timestamp(year, month, day, 19)
+
+        update_status(f"Processando dia {day}...")
 
         for service_index, service_name in enumerate(service_names):
             for data_type in ['requisicoes', 'degradacao', 'indisponibilidade']:
@@ -143,11 +155,15 @@ def process_service_data(year, month, days_to_process):
                         for query_detail in request['queries']:
                             query = query_detail['query']
                             result = run_query(query, from_time, to_time)
+                            if cancel_processing:
+                                return
                             if result is not None and 'series' in result:
                                 query_total = sum_points(result['series'])
                                 services_data[service_name][data_type] += query_total
                 else:
                     print(f"Não há consulta definida para {service_name} em {data_type}.")
+        processed_days += 1
+        update_status(f"Processamento de {processed_days}/{total_days} dias concluído.")
                     
     for service_name in service_names:
         erros_totais = services_data[service_name]['degradacao'] + services_data[service_name]['indisponibilidade']
@@ -207,17 +223,106 @@ def save_data_to_json(all_services_data, sistemas, file_name):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(sistemas_data_with_sla, file, ensure_ascii=False, indent=4)
         print(f"Os dados de sistemas foram salvos com sucesso em {file_path}")
-def main():
-    year = int(input("Informe o Ano da consulta (YYYY): "))
-    month = int(input("Informe o Mês da consulta: "))
-    days_to_process = int(input("Quantos dias do mês: "))
-    print("Processando dados...")
-    
+
+def process_and_save_data(year, month):
+    global cancel_processing
+    update_status("Processando dados...")
+    _, days_to_process = monthrange(year, month) 
     all_services_monthly_data = process_service_data(year, month, days_to_process)
-    
-    file_name = f'service_data_{year}_{month:02d}.json'
-    save_data_to_json(all_services_monthly_data, sistemas, file_name)
-    print("Processamento concluído.")
+    if not cancel_processing:
+        file_name = f'service_data_{year}_{month:02d}.json'
+        save_data_to_json(all_services_monthly_data, sistemas, file_name)
+        update_status("Processamento concluído com sucesso!")
+        messagebox.showinfo("Concluído", "Processamento concluído com sucesso!")
+    else:
+        messagebox.showinfo("Cancelado", "Processamento cancelado pelo usuário.")
+        update_status("")
+
+def clear_status_after_cancel():
+    global root
+    time.sleep(2) 
+    if cancel_processing:
+        update_status("")
+
+def update_status(message):
+    global root 
+    status_label.config(text=message)
+    root.update_idletasks()
+
+def main():
+    def start_processing():
+        global cancel_processing
+        cancel_processing = False
+        try:
+            year = int(year_entry.get())
+            month = int(month_entry.get())
+            
+            if year >= 2023:
+                if month >=1 and month <=12:
+                    update_status("Iniciando processamento...")
+                    
+                    threading.Thread(target=process_and_save_data, args=(year, month)).start()
+                else:
+                    messagebox.showerror("Erro", "Mês inválido.")
+            else:
+                messagebox.showerror("Erro", "Não existem dados anteriores a 2023.")
+        except ValueError:
+            messagebox.showerror("")
+
+    def cancel_processing_function():
+        global cancel_processing
+        cancel_processing = True
+        update_status("Cancelando o processamento...")
+        threading.Thread(target=clear_status_after_cancel).start()
+
+    global root
+    root = tk.Tk()
+    root.title("Consulta de Dados")
+    root.geometry("640x480")
+
+    canvas = tk.Canvas(root, bg="#778899", highlightthickness=0)
+    canvas.pack(fill="both", expand=True)
+
+    x1, y1, x2, y2 = 193, 55, 426, 405
+    offset = 10
+
+    canvas.create_rectangle(x1 + offset, y1 + offset, x2 + offset, y2 + offset, fill="#00BFFF", outline="")
+
+    frame_content = tk.Frame(canvas, bg="#191970", padx=20, pady=20)
+    canvas.create_window((320, 240), window=frame_content, anchor="center")
+
+    tk.Label(frame_content, text="Informe o ano da consulta:", bg="#191970", fg="white", font=("Helvetica", 10, "bold")).pack(pady=5)
+    year_entry = tk.Entry(frame_content)
+    year_entry.pack(pady=5)
+
+    tk.Label(frame_content, text="Informe o mês da consulta:", bg="#191970", fg="white", font=("Helvetica", 10, "bold")).pack(pady=5)
+    month_entry = tk.Entry(frame_content)
+    month_entry.pack(pady=5)
+
+    style = ttk.Style()
+    style.configure("TButton",
+                    font=("Helvetica", 10),
+                    padding=6,
+                    background="#6A5ACD",
+                    foreground="black",
+                    relief="raised")
+
+    style.map("TButton",
+              background=[('active', '#836FFF')],
+              foreground=[('active', 'black')],
+              relief=[('pressed', 'sunken'), ('!pressed', 'raised')])
+
+    start_button = ttk.Button(frame_content, text="Iniciar", command=start_processing, style="TButton")
+    start_button.pack(pady=20)
+
+    cancel_button = ttk.Button(frame_content, text="Cancelar", command=cancel_processing_function, style="TButton")
+    cancel_button.pack(pady=20)
+
+    global status_label
+    status_label = tk.Label(frame_content, text="", bg="#191970", fg="white")
+    status_label.pack(pady=1)
+
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
