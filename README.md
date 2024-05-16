@@ -14,7 +14,6 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 - Você instalou corretamente os `<requirements.txt>`;
-- 
 - Você tem uma `<API_KEY>` e uma `<APPLICATION_KEY>` da DataDog e criou um arquivo `<.env>`, e adicionou no diretório AppBook com as seguintes informações:
   
 *.env*
