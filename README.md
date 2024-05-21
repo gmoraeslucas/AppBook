@@ -13,19 +13,19 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
+- Você possui a versão mais recente do `<Python>` instalada.
 - Você instalou corretamente os `<requirements.txt>`;
-- Você tem uma `<API_KEY>` e uma `<APPLICATION_KEY>` da DataDog e criou um arquivo `<.env>`, e adicionou no diretório AppBook com as seguintes informações:
+- Você tem uma `<API_KEY>` e uma `<APPLICATION_KEY>` da DataDog, criou um arquivo `<.env>` e adicionou no diretório AppBook com as seguintes informações:
   
 *.env*
 ```
 API_KEY=xxx
 APPLICATION_KEY=xxx
 ```
-- Você possui a versão mais recente do `<Python>` instalada.
 
 ## ☕ Usando AppBook
 
-Quando você usar a aplicação, terá que informar dois dados para a consulta dos dados:
+Quando você usar a aplicação, terá que informar dois dados para a consulta:
 
 ```
 Informe o Ano da consulta (YYYY):
