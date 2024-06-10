@@ -1,7 +1,7 @@
 ﻿# AppBook
 
 
-> Automação desenvolvida em Python para coleta de dados dentro do horário comercial (Dias úteis: 7:00am - 7:00pm) referentes ao ano, mês e dias do mês selecionados, de cada sistema. Os dados são gerados a partir da API DataDog e são armazenados em um arquivo JSON.
+> Automação desenvolvida em Python para coleta de dados dentro do horário comercial (Dias úteis: 7:00am - 7:00pm) referentes ao ano, mês e dias do mês selecionados, de cada sistema da Seguros Unimed. Os dados são gerados a partir da API DataDog e são armazenados em um arquivo JSON.
 
 ### Ajustes e melhorias
 
