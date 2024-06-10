@@ -4,9 +4,10 @@ import os
 import holidays
 import urllib3
 import threading
-import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
+from tkinter import BOTH, CENTER, messagebox
+from PIL import Image, ImageTk
 from calendar import monthrange
 from datetime import datetime, timezone, timedelta, date
 from dotenv import load_dotenv
@@ -164,6 +165,7 @@ def process_service_data(year, month, days_to_process):
                     print(f"Não há consulta definida para {service_name} em {data_type}.")
         processed_days += 1
         update_status(f"Processamento de {processed_days}/{total_days} dias concluído.")
+        update_progress((processed_days / total_days) * 100)
                     
     for service_name in service_names:
         erros_totais = services_data[service_name]['degradacao'] + services_data[service_name]['indisponibilidade']
@@ -244,30 +246,54 @@ def clear_status_after_cancel():
     if cancel_processing:
         update_status("")
 
+def update_progress(value):
+    global progress, progress_label
+    progress['value'] = value
+    percentage = (value / progress['maximum']) * 100
+    progress_label.config(text=f"{percentage:.2f}%")
+    root.update_idletasks()
+    
 def update_status(message):
-    global root 
+    global root, status_label
     status_label.config(text=message)
     root.update_idletasks()
+
+def clear_status_after_cancel():
+    global root
+    time.sleep(2)
+    if cancel_processing:
+        update_status("")
 
 def main():
     def start_processing():
         global cancel_processing
         cancel_processing = False
         try:
-            year = int(year_entry.get())
-            month = int(month_entry.get())
-            
+            year = year_entry.get()
+            month = month_entry.get()
+
+            if not year.isdigit() or len(year) != 4:
+                messagebox.showerror("Erro", "Por favor, insira um ano válido com 4 dígitos.")
+                return
+
+            if not month.isdigit() or not (1 <= int(month) <= 12):
+                messagebox.showerror("Erro", "Por favor, insira um mês válido (1-12).")
+                return
+
+            year = int(year)
+            month = int(month)
+
             if year >= 2023:
-                if month >=1 and month <=12:
+                if month >= 1 and month <= 12:
                     update_status("Iniciando processamento...")
-                    
+
                     threading.Thread(target=process_and_save_data, args=(year, month)).start()
                 else:
                     messagebox.showerror("Erro", "Mês inválido.")
             else:
                 messagebox.showerror("Erro", "Não existem dados anteriores a 2023.")
         except ValueError:
-            messagebox.showerror("")
+            messagebox.showerror("Erro", "Ano ou mês inválido.")
 
     def cancel_processing_function():
         global cancel_processing
@@ -275,52 +301,94 @@ def main():
         update_status("Cancelando o processamento...")
         threading.Thread(target=clear_status_after_cancel).start()
 
-    global root
-    root = tk.Tk()
+    def rounded_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
+        points = [
+            (x1 + radius, y1),
+            (x2 - radius, y1),
+            (x2, y1),
+            (x2, y1 + radius),
+            (x2, y2 - radius),
+            (x2, y2),
+            (x2 - radius, y2),
+            (x1 + radius, y2),
+            (x1, y2),
+            (x1, y2 - radius),
+            (x1, y1 + radius),
+            (x1, y1)
+        ]
+        canvas.create_arc(x1, y1, x1 + 2 * radius, y1 + 2 * radius, start=90, extent=90, style="arc", **kwargs)
+        canvas.create_arc(x2 - 2 * radius, y1, x2, y1 + 2 * radius, start=0, extent=90, style="arc", **kwargs)
+        canvas.create_arc(x2 - 2 * radius, y2 - 2 * radius, x2, y2, start=270, extent=90, style="arc", **kwargs)
+        canvas.create_arc(x1, y2 - 2 * radius, x1 + 2 * radius, y2, start=180, extent=90, style="arc", **kwargs)
+
+        canvas.create_line(points[0], points[1], **kwargs)
+        canvas.create_line(points[3], points[4], **kwargs)
+        canvas.create_line(points[6], points[7], **kwargs)
+        canvas.create_line(points[9], points[10], **kwargs)
+
+    global root, progress, progress_label, status_label
+    root = ttk.Window(themename="morph")
     root.title("Consulta de Dados")
-    root.geometry("640x480")
+    root.geometry("800x600")
 
-    canvas = tk.Canvas(root, bg="#778899", highlightthickness=0)
-    canvas.pack(fill="both", expand=True)
+    logo_image = Image.open("logo-seguros.png")
+    logo_image = logo_image.resize((150, 80)) 
+    logo_photo = ImageTk.PhotoImage(logo_image)
 
-    x1, y1, x2, y2 = 193, 55, 426, 405
-    offset = 10
+    canvas = ttk.Canvas(root, width=800, height=600)
+    canvas.pack(expand=True, fill=BOTH)
+    canvas.create_image(400, 75, image=logo_photo, anchor=CENTER) 
+    rounded_rectangle(canvas, 200, 25, 600, 575, 20, fill="navy", width=3) 
 
-    canvas.create_rectangle(x1 + offset, y1 + offset, x2 + offset, y2 + offset, fill="#00BFFF", outline="")
+    frame_content = ttk.Frame(canvas, padding=10)
+    frame_content.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-    frame_content = tk.Frame(canvas, bg="#191970", padx=20, pady=20)
-    canvas.create_window((320, 240), window=frame_content, anchor="center")
+    inner_frame = ttk.Frame(canvas)
+    canvas.create_window(400, 350, window=inner_frame, anchor=CENTER) 
 
-    tk.Label(frame_content, text="Informe o ano da consulta:", bg="#191970", fg="white", font=("Helvetica", 10, "bold")).pack(pady=5)
-    year_entry = tk.Entry(frame_content)
-    year_entry.pack(pady=5)
+    year_label = ttk.Label(inner_frame, text="ANO:", style='TLabel')
+    year_label.pack(pady=5, anchor=CENTER)
 
-    tk.Label(frame_content, text="Informe o mês da consulta:", bg="#191970", fg="white", font=("Helvetica", 10, "bold")).pack(pady=5)
-    month_entry = tk.Entry(frame_content)
-    month_entry.pack(pady=5)
+    year_entry = ttk.Entry(inner_frame, width=15, style='TEntry')
+    year_entry.pack(pady=5, anchor=CENTER)
+
+    month_label = ttk.Label(inner_frame, text="MÊS (1-12):", style='TLabel')
+    month_label.pack(pady=5, anchor=CENTER)
+
+    month_entry = ttk.Entry(inner_frame, width=15, style='TEntry')
+    month_entry.pack(pady=5, anchor=CENTER)
+    process_button = ttk.Button(
+            inner_frame, 
+            text="PROCESSAR", 
+            command=start_processing, 
+            bootstyle=(OUTLINE, SUCCESS), 
+            width=15, 
+            padding=(20, 5)
+        )
+    process_button.pack(pady=20, anchor=CENTER)
+    cancel_button = ttk.Button(
+            inner_frame, 
+            text="PARAR", 
+            command=cancel_processing_function, 
+            bootstyle=(OUTLINE, DANGER), 
+            width=15, 
+            padding=(20, 5)
+        )
+    cancel_button.pack(pady=5, anchor=CENTER)
+
+    progress = ttk.Progressbar(inner_frame, mode='determinate', bootstyle="info-striped", length=200)
+    progress.pack(pady=10, anchor=CENTER)
+
+    progress_label = ttk.Label(inner_frame, text="0%", style='TLabel')
+    progress_label.pack(pady=5, anchor=CENTER)
+
+    status_label = ttk.Label(inner_frame, text="", style='TLabel')
+    status_label.pack(pady=10, anchor=CENTER)
 
     style = ttk.Style()
-    style.configure("TButton",
-                    font=("Helvetica", 10),
-                    padding=6,
-                    background="#6A5ACD",
-                    foreground="black",
-                    relief="raised")
-
-    style.map("TButton",
-              background=[('active', '#836FFF')],
-              foreground=[('active', 'black')],
-              relief=[('pressed', 'sunken'), ('!pressed', 'raised')])
-
-    start_button = ttk.Button(frame_content, text="Iniciar", command=start_processing, style="TButton")
-    start_button.pack(pady=20)
-
-    cancel_button = ttk.Button(frame_content, text="Cancelar", command=cancel_processing_function, style="TButton")
-    cancel_button.pack(pady=20)
-
-    global status_label
-    status_label = tk.Label(frame_content, text="", bg="#191970", fg="white")
-    status_label.pack(pady=1)
+    style.configure('TButton', font=('Helvetica', 9, 'bold'), padding=10)
+    style.configure('TLabel', font=('Helvetica', 9, 'bold'), foreground='navy')
+    style.configure('TEntry', font=('Helvetica', 9, 'bold'))
 
     root.mainloop()
 
