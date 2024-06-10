@@ -3,3 +3,4 @@ requests==2.31.0
 urllib3==2.2.1
 python-dotenv==1.0.1
 tk==0.1.0
+ttkbootstrap==1.10.1
