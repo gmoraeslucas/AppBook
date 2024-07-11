@@ -18,6 +18,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 api_key = os.getenv('API_KEY')
 application_key = os.getenv('APPLICATION_KEY')
+ZABBIX_URL = os.getenv('ZABBIX_URL')
+ZABBIX_TOKEN = os.getenv('ZABBIX_TOKEN')
+auth_token = ZABBIX_TOKEN
 
 url = 'https://api.datadoghq.com/api/v1/query'
 
@@ -36,6 +39,7 @@ with open('querys/dashboard_queries_indisponibilidade.json', 'r') as file:
 dashboard_queries_requisicoes = dashboard_queries_req_data['requisicoes']
 dashboard_queries_degradacao = dashboard_queries_deg_data['degradacao']
 dashboard_queries_indisponibilidade = dashboard_queries_ind_data['indisponibilidade']
+
 def run_query(query, from_time, to_time):
     params = {
         'query': query,
@@ -196,8 +200,23 @@ def process_service_data(year, month, days_to_process):
     for sistema, sla_total in sistemas_sla_data.items():
         for servico in sistemas[sistema]:
             services_data[servico]['SLA_Sistema'] = f"{round(sla_total, 2)}%"
+
+    zabbix_data = process_zabbix_data(year, month)
     
-    return services_data
+    return services_data, zabbix_data
+
+def generate_sla_summary(json_data):
+    summary = {}
+
+    for sistema, servicos in json_data.items():
+        sla_total = servicos['SLA_Total']
+        quantidade_servicos = len(servicos['Servicos'])
+        summary[sistema] = {
+            'SLA_Total': sla_total,
+            'Quantidade de serviços': quantidade_servicos
+        }
+    
+    return summary
 
 def save_data_to_json(all_services_data, sistemas, file_name):
     if not os.path.exists('data'):
@@ -207,7 +226,7 @@ def save_data_to_json(all_services_data, sistemas, file_name):
 
     sistemas_data = {sistema: {} for sistema in sistemas}
     for sistema, servicos in sistemas.items():
-        sistemas_data[sistema] = {servico: {k: v for k, v in all_services_data[servico].items() if k != 'SLA_Sistema'} for servico in servicos if servico in all_services_data}
+        sistemas_data[sistema] = {servico: {k: v for k, v in all_services_data[0][servico].items() if k != 'SLA_Sistema'} for servico in servicos if servico in all_services_data[0]}
 
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(sistemas_data, file, ensure_ascii=False, indent=4)
@@ -215,7 +234,7 @@ def save_data_to_json(all_services_data, sistemas, file_name):
     
     sistemas_data_with_sla = {}
     for sistema in sistemas:
-        sla_sistema_values = [float(all_services_data[servico]['SLA_Sistema'].rstrip('%')) for servico in sistemas[sistema] if servico in all_services_data]
+        sla_sistema_values = [float(all_services_data[0][servico]['SLA_Sistema'].rstrip('%')) for servico in sistemas[sistema] if servico in all_services_data[0]]
         if sla_sistema_values:
             sla_total_sistema = sum(sla_sistema_values) / len(sla_sistema_values)
             sistemas_data_with_sla[sistema] = {'SLA_Total': f"{round(sla_total_sistema, 2)}%", 'Servicos': sistemas_data[sistema]}
@@ -225,6 +244,16 @@ def save_data_to_json(all_services_data, sistemas, file_name):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(sistemas_data_with_sla, file, ensure_ascii=False, indent=4)
         print(f"Os dados de sistemas foram salvos com sucesso em {file_path}")
+
+    sla_summary = generate_sla_summary(sistemas_data_with_sla)
+    summary_file_path = os.path.join('data', f'summary_{file_name}')
+
+    sla_summary['Zabbix'] = all_services_data[1]
+
+    with open(summary_file_path, 'w', encoding='utf-8') as summary_file:
+        json.dump(sla_summary, summary_file, ensure_ascii=False, indent=4)
+        print(f"Resumo de SLA salvo com sucesso em {summary_file_path}")
+
 
 def process_and_save_data(year, month):
     global cancel_processing
@@ -263,6 +292,178 @@ def clear_status_after_cancel():
     time.sleep(2)
     if cancel_processing:
         update_status("")
+
+def get_month_date_range(year, month):
+    start_date = datetime(year, month, 1)
+    if month == 12:
+        end_date = datetime(year + 1, 1, 1) - timedelta(seconds=1)
+    else:
+        end_date = datetime(year, month + 1, 1) - timedelta(seconds=1)
+    return start_date, end_date
+
+def get_hostgroup_id(auth_token, group_name):
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "hostgroup.get",
+        "params": {
+            "output": ["groupid"],
+            "filter": {
+                "name": [group_name]
+            }
+        },
+        "auth": auth_token,
+        "id": 1
+    }
+    try:
+        response = requests.post(ZABBIX_URL, data=json.dumps(payload), headers={'Content-Type': 'application/json-rpc'}, verify=False)
+        response.raise_for_status()
+        result = response.json().get('result')
+        if result:
+            return result[0].get('groupid')
+    except requests.exceptions.RequestException as e:
+        print(f"Erro na solicitação HTTP: {e}")
+    except json.JSONDecodeError as e:
+        print(f"Erro ao decodificar JSON: {e}")
+    return None
+
+def get_hosts(auth_token, groupid):
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "host.get",
+        "params": {
+            "output": ["hostid", "name", "status"],
+            "groupids": groupid,
+            "filter": {
+                "status": "0"
+            }
+        },
+        "auth": auth_token,
+        "id": 1
+    }
+    try:
+        response = requests.post(ZABBIX_URL, data=json.dumps(payload), headers={'Content-Type': 'application/json-rpc'}, verify=False)
+        response.raise_for_status()
+        return response.json().get('result')
+    except requests.exceptions.RequestException as e:
+        print(f"Erro na solicitação HTTP: {e}")
+    except json.JSONDecodeError as e:
+        print(f"Erro ao decodificar JSON: {e}")
+    return None
+
+def get_events(auth_token, hostid, start_date, end_date):
+    total_events = []
+
+    current_date = start_date
+    while current_date <= end_date:
+        period_start = current_date.replace(hour=0, minute=0, second=0)
+        period_end = current_date.replace(hour=23, minute=59, second=59)
+
+        payload = {
+            "jsonrpc": "2.0",
+            "method": "event.get",
+            "params": {
+                "output": ["eventid", "clock", "value"],
+                "hostids": hostid,
+                "time_from": int(period_start.timestamp()),
+                "time_till": int(period_end.timestamp()),
+                "sortfield": ["clock"],
+                "sortorder": "ASC",
+                "value": [0, 1]
+            },
+            "auth": auth_token,
+            "id": 1
+        }
+        try:
+            response = requests.post(ZABBIX_URL, data=json.dumps(payload), headers={'Content-Type': 'application/json-rpc'}, verify=False)
+            response.raise_for_status()
+            total_events.extend(response.json().get('result'))
+        except requests.exceptions.RequestException as e:
+            print(f"Erro na solicitação HTTP: {e}")
+        except json.JSONDecodeError as e:
+            print(f"Erro ao decodificar JSON: {e}")
+
+        current_date += timedelta(days=1)
+
+    return total_events
+
+def calculate_availability(events, start_date, end_date):
+    if not events:
+        return 100.0
+
+    total_time = int(end_date.timestamp()) - int(start_date.timestamp())
+    down_time = 0
+    last_down_time = None
+
+    for event in events:
+        if event['value'] == '1':
+            last_down_time = int(event['clock'])
+        elif event['value'] == '0' and last_down_time:
+            down_time += int(event['clock']) - last_down_time
+            last_down_time = None
+
+    if last_down_time:
+        down_time += int(end_date.timestamp()) - last_down_time
+
+    uptime = total_time - down_time
+    availability = (uptime / total_time) * 100
+    return availability
+
+def process_zabbix_data(year, month):
+    group_name = "UMS/APP/PRD/REDE-SEGURANCA"
+    start_date, end_date = get_month_date_range(year, month)
+    host_data = []
+    pabx_hosts = []
+    firewall_hosts = []
+    switch_hosts = []
+
+    if auth_token:
+        groupid = get_hostgroup_id(auth_token, group_name)
+        if groupid:
+            hosts = get_hosts(auth_token, groupid)
+            if hosts:
+                for host in hosts:
+                    hostid = host['hostid']
+                    events = get_events(auth_token, hostid, start_date, end_date)
+                    if events is not None:
+                        if len(events) == 0:
+                            availability = 100.0
+                        else:
+                            availability = calculate_availability(events, start_date, end_date)
+                        host_data.append({
+                            "host": host['name'],
+                            "availability": f"{availability:.4f}%"
+                        })
+
+                        if host['name'].startswith('S'):
+                            switch_hosts.append(availability)
+                        elif host['name'].startswith(('cluster', 'clt', 'R')):
+                            pabx_hosts.append(availability)
+                        elif host['name'].startswith('F'):
+                            firewall_hosts.append(availability)
+                    else:
+                        print(f"Falha ao obter eventos para o host {host['name']}")
+            else:
+                print("Falha ao obter dados de hosts")
+        else:
+            print(f"Falha ao obter o ID do grupo de hosts '{group_name}'")
+    else:
+        print("Falha na autenticação")
+
+    def calculate_group_availability(availabilities):
+        if not availabilities:
+            return 0
+        return sum(availabilities) / len(availabilities)
+
+    group_availability = {
+        "PABX": f"{calculate_group_availability(pabx_hosts):.2f}%",
+        "FIREWALL": f"{calculate_group_availability(firewall_hosts):.2f}%",
+        "SWITCH": f"{calculate_group_availability(switch_hosts):.2f}%"
+    }
+
+    return {
+        "group_availability": group_availability,
+        "hosts": host_data
+    }
 
 def main():
     def start_processing():
